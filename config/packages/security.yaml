@@ -8,16 +8,15 @@ security:
         users:
             entity:
                 class: App\Entity\Users
-                propery: email
+                property: email
 
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            anonymous: true
-            lazy: true
-            provider: users_in_memory
+            anonymous: lazy
+            provider: users
 
         login:
             pattern: ^/api/login
