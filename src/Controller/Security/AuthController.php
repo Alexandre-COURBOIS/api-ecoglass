@@ -2,9 +2,9 @@
 
 namespace App\Controller\Security;
 
+use App\Repository\UsersRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -37,11 +37,10 @@ class AuthController extends AbstractController
      */
     public function loginCheck()
     {
-
         $user = $this->getUser();
 
         return new JsonResponse([
-            'username' => $user->getUsername(),
+            'user' => $user->getUsername(),
             'roles' => $user->getRoles(),
         ]);
     }
@@ -50,7 +49,7 @@ class AuthController extends AbstractController
     /**
      * @Route("/logout", name="logout", methods={"POST"})
      */
-    public function logout(): Response
+    public function logout()
     {
 
     }

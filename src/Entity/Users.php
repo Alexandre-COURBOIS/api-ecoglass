@@ -201,7 +201,7 @@ class Users implements UserInterface
         return $this;
     }
 
-    public function getPassword(): ?string
+    public function getPassword()
     {
         return $this->password;
     }
@@ -249,9 +249,11 @@ class Users implements UserInterface
         return $this;
     }
 
-    public function getRoles(): ?array
+    public function getRoles()
     {
-        return $this->roles;
+        $roles = $this->roles;
+
+        return array_unique($roles);
     }
 
     public function setRoles(array $roles): self
@@ -268,7 +270,7 @@ class Users implements UserInterface
 
     public function getUsername()
     {
-        $this->getUsername();
+       return $this->email;
     }
 
     public function eraseCredentials()
