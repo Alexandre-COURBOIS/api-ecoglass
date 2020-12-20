@@ -7,6 +7,10 @@
         "php": ">=7.2.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "composer/package-versions-deprecated": "1.11.99.1",
+        "doctrine/doctrine-bundle": "^2.2",
+        "doctrine/doctrine-migrations-bundle": "^3.0",
+        "doctrine/orm": "^2.8",
         "lexik/jwt-authentication-bundle": "^2.10",
         "symfony/console": "5.2.*",
         "symfony/dotenv": "5.2.*",
@@ -56,5 +60,11 @@
             "allow-contrib": false,
             "require": "5.2.*"
         }
+    },
+    "require-dev": {
+        "symfony/maker-bundle": "^1.26",
+        "symfony/stopwatch": "^5.2",
+        "symfony/twig-bundle": "^5.2",
+        "symfony/web-profiler-bundle": "^5.2"
     }
 }

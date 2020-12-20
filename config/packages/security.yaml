@@ -1,15 +1,19 @@
 security:
+    encoders:
+        App\Entity\Users:
+            algorithm: bcrypt
+
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
-        users_in_memory: { memory: null }
+        users:
+            entity:
+                class: App\Entity\Users
+                property: email
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        main:
-            anonymous: true
-            lazy: true
-            provider: users_in_memory
 
         login:
             pattern: ^/api/login
@@ -26,6 +30,10 @@ security:
             guard:
                 authenticators:
                     - lexik_jwt_authentication.jwt_token_authenticator
+
+        main:
+            anonymous: lazy
+            provider: users
 
     access_control:
         - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
