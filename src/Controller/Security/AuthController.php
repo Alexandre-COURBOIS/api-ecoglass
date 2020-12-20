@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Security;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -12,13 +12,13 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 /**
  * Class AuthController
  * @package App\Controller
- * @Route("/api", name="api_security_auth_"
+ * @Route("/api", name="api_security_auth_")
  */
 class AuthController extends AbstractController
 {
 
     /**
-     * @Route("/login", name="login", methods={"POST"}
+     * @Route("/login", name="login", methods={"POST"})
      * @param AuthenticationUtils $authenticationUtils
      * @return JsonResponse
      */
@@ -32,7 +32,7 @@ class AuthController extends AbstractController
     }
 
     /**
-     * @Route("/login_check", name="login_check", methods={"POST"}
+     * @Route("/login_check", name="login_check", methods={"POST"})
      * @return JsonResponse
      */
     public function loginCheck()
