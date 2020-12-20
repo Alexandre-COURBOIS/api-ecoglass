@@ -239,3 +239,7 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/phpstorm+all,jetbrains+all,windows,macos,osx,linux
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/*.pem
+/config/jwt
+###< lexik/jwt-authentication-bundle ###
