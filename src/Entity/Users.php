@@ -69,6 +69,16 @@ class Users implements UserInterface
     private $password;
 
     /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $longitude;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $latitude;
+
+    /**
      * @ORM\Column(type="string", length=255)
      */
     private $idFacebook;
@@ -87,6 +97,7 @@ class Users implements UserInterface
      * @ORM\Column(type="json")
      */
     private $roles = [];
+
 
     public function getId(): ?int
     {
@@ -209,6 +220,31 @@ class Users implements UserInterface
     public function setPassword(string $password): self
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+
+    public function getLongitude(): ?float
+    {
+        return $this->longitude;
+    }
+
+    public function setLongitude(?float $longitude): self
+    {
+        $this->longitude = $longitude;
+
+        return $this;
+    }
+
+    public function getLatitude(): ?float
+    {
+        return $this->latitude;
+    }
+
+    public function setLatitude(?float $latitude): self
+    {
+        $this->latitude = $latitude;
 
         return $this;
     }
