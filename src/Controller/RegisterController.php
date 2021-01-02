@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 
 /**
- * @Route("/register", name="register_"
+ * @Route("/register", name="register_")
  * Class RegisterController
  * @package App\Controller
  */
