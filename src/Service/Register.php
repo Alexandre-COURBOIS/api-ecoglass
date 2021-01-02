@@ -4,11 +4,12 @@ namespace App\Service;
 
 use App\Entity\Users;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class Register
+class Register extends AbstractController
 {
 
     /**
@@ -24,6 +25,7 @@ class Register
         $user = new Users();
 
         $data = json_decode($request->getContent(), true);
+
 
 
     }
