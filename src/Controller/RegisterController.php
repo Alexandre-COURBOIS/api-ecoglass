@@ -2,10 +2,14 @@
 
 namespace App\Controller;
 
-use App\Service\Register;
+use App\Entity\Users;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 
 /**
@@ -16,20 +20,26 @@ use Symfony\Component\Routing\Annotation\Route;
 class RegisterController extends AbstractController
 {
 
-    private $registerService;
-
-    public function __construct(Register $register)
-    {
-        $this->registerService = $register;
-    }
+    public function __construct(){}
 
     /**
      * @Route("/user", name="user")
+     * @param Request $request
+     * @param ValidatorInterface $validator
+     * @param EntityManagerInterface $em
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     *
+     * Methode permettant l'inscription de nouveaux utilisateurs
      */
-    public function userRegister()
+    public function userRegister(Request $request, ValidatorInterface $validator, EntityManagerInterface $em, UserPasswordEncoderInterface $passwordEncoder)
     {
-        return $this->render('register/index.html.twig', [
-            'controller_name' => 'RegisterController',
-        ]);
+        $user = new Users();
+
+        $data = json_decode($request->getContent(), true);
+
+        $this->createForm();
+
+
     }
+
 }
