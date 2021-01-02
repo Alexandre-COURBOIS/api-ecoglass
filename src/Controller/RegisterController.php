@@ -30,6 +30,7 @@ class RegisterController extends AbstractController
      * @param ValidatorInterface $validator
      * @param EntityManagerInterface $em
      * @param UserPasswordEncoderInterface $passwordEncoder
+     * @return JsonResponse
      *
      * Methode permettant l'inscription de nouveaux utilisateurs
      */
