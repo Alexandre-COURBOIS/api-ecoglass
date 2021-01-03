@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=ContainersRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class Containers
 {
@@ -51,6 +52,17 @@ class Containers
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
+
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function prePersist()
+    {
+        if (empty($this->getCreatedAt())) {
+            $this->setCreatedAt(new \DateTime());
+        }
+    }
 
     public function getId(): ?int
     {
