@@ -38,7 +38,7 @@ class ContainerController extends AbstractController
 
         if (count($containerFeature) !== (count($containersRepository->findAll()))) {
 
-            $containersRepository->deleteAllFromContainerTable();
+            $containersRepository->deleteAllContainers();
 
             for ($i = 0; $i <= count($containerFeature) - 1; $i++) {
 
