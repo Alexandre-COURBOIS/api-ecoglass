@@ -19,6 +19,13 @@ class ContainersRepository extends ServiceEntityRepository
         parent::__construct($registry, Containers::class);
     }
 
+    public function deleteAllFromContainerTable()
+    {
+        return $this->createQueryBuilder('c')
+            ->delete()
+            ->getQuery()
+            ->execute();
+    }
     // /**
     //  * @return Containers[] Returns an array of Containers objects
     //  */
