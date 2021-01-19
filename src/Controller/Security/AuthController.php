@@ -22,7 +22,7 @@ class AuthController extends AbstractController
      * @param AuthenticationUtils $authenticationUtils
      * @return JsonResponse
      */
-    public function login(AuthenticationUtils $authenticationUtils)
+    public function login(AuthenticationUtils $authenticationUtils): JsonResponse
     {
 
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -35,7 +35,7 @@ class AuthController extends AbstractController
      * @Route("/login_check", name="login_check", methods={"POST"})
      * @return JsonResponse
      */
-    public function loginCheck()
+    public function loginCheck(): JsonResponse
     {
         $user = $this->getUser();
 
