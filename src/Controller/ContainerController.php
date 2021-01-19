@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ContainerController extends AbstractController
 {
 
-    private $containerService;
+    private Container $containerService;
 
     public function __construct(Container $container)
     {
@@ -34,7 +34,7 @@ class ContainerController extends AbstractController
     {
         $glassContainer = $this->containerService->getGlassContainerApi();
 
-        $containerFeature = $glassContainer->features;
+        $containerFeature = $glassContainer["features"];
 
         if (count($containerFeature) !== (count($containersRepository->findAll()))) {
 
@@ -46,12 +46,12 @@ class ContainerController extends AbstractController
 
                 $container = $containerFeature[$i];
 
-                $containerId = $container->properties->identifiant;
-                $containerCity = $container->properties->commune;
-                $containerPostalCode = $container->properties->code_postal;
-                $containerStreet = $container->properties->voie;
-                $containerLongitude = $container->geometry->coordinates[0];
-                $containerLatitude = $container->geometry->coordinates[1];
+                $containerId = $container["properties"]["identifiant"];
+                $containerCity = $container["properties"]["commune"];
+                $containerPostalCode = $container["properties"]["code_postal"];
+                $containerStreet = $container["properties"]["voie"];
+                $containerLongitude = $container["geometry"]["coordinates"][0];
+                $containerLatitude = $container["geometry"]["coordinates"][1];
 
                 $containers->setContainerId((int)$containerId);
                 $containers->setCity($containerCity);
@@ -82,7 +82,7 @@ class ContainerController extends AbstractController
     {
         $containers = $this->containerService->getGlassContainerApi();
 
-        return new JsonResponse(count($containers->features), Response::HTTP_OK);
+        return new JsonResponse(count($containers["features"]), Response::HTTP_OK);
     }
 
     /**
