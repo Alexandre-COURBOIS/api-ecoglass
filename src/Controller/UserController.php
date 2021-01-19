@@ -32,6 +32,8 @@ class UserController extends AbstractController
 
         $user = $usersRepository->getUserByEmail($email);
 
-        return new JsonResponse($user, 200);
+        return new JsonResponse($user, Response::HTTP_OK);
     }
+
+
 }
