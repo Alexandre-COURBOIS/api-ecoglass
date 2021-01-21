@@ -133,6 +133,17 @@ class Users implements UserInterface
      *     message="Veuillez renseigner un mail valide.",
      *     groups={"Register"}
      *     )
+     *
+     * @Assert\NotBlank(
+     *     message="Merci de renseigner votre email.",
+     *     groups={"UpdateContactInformations"}
+     *     )
+     *
+     * @Assert\Email(
+     *     message="Veuillez renseigner un mail valide.",
+     *     groups={"UpdateContactInformations"}
+     *     )
+     *
      */
     private $email;
 
@@ -144,6 +155,13 @@ class Users implements UserInterface
      *     minMessage="Merci de renseigner une adresse correct",
      *     groups={"Register"}
      *     )
+     *
+     * @Assert\Length(
+     *     min="5",
+     *     minMessage="Merci de renseigner une adresse correct",
+     *     groups={"UpdateContactInformations"}
+     *     )
+     *
      */
     private $address;
 
@@ -161,6 +179,17 @@ class Users implements UserInterface
      *     groups={"Register"}
      *     )
      *
+     * @Assert\NotBlank(
+     *     message="Merci de renseigner votre ville.",
+     *     groups={"UpdateContactInformations"}
+     *     )
+     *
+     * @Assert\Length(
+     *     min="2",
+     *     minMessage="Merci de renseigner une ville existante.",
+     *     groups={"UpdateContactInformations"}
+     *     )
+     *
      */
     private $city;
 
@@ -176,6 +205,17 @@ class Users implements UserInterface
      *     min="2",
      *     minMessage="Merci de renseigner un code postale valide.",
      *     groups={"Register"}
+     *     )
+     *
+     * @Assert\NotBlank(
+     *     message="Merci de renseigner votre code postal.",
+     *     groups={"UpdateContactInformations"}
+     *     )
+     *
+     * @Assert\Length(
+     *     min="2",
+     *     minMessage="Merci de renseigner un code postale valide.",
+     *     groups={"UpdateContactInformations"}
      *     )
      *
      */
