@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Form\UserPersonnalInformationsType;
 use App\Repository\UsersRepository;
+use App\Service\SecurityFunctions;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,6 +22,14 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class UserController extends AbstractController
 {
+
+    private SecurityFunctions $sf;
+
+    public function __construct(SecurityFunctions $securityFunctions)
+    {
+        $this->sf = $securityFunctions;
+    }
+
     /**
      * @Route("/get/user", name="get_user", methods={"POST"})
      * @param UsersRepository $usersRepository
@@ -59,27 +68,36 @@ class UserController extends AbstractController
 
             $user = $this->getUser();
 
-            $form = $this->createForm(UserPersonnalInformationsType::class, $user);
+            if ($user) {
 
-            $form->submit($datas);
+                $datas['name'] ? true : $datas['name'] = $user->getName();
+                $datas['surname'] ? true : $datas['surname'] = $user->getSurname();
+                $datas['pseudo'] ? true : $datas['pseudo'] = $user->getPseudo();
 
-            $validate = $validator->validate($user, null, 'UpdatePersonnalInformations');
+                $form = $this->createForm(UserPersonnalInformationsType::class, $user);
 
-            if (count($validate) !== 0) {
-                foreach ($validate as $error) {
-                    return new JsonResponse($error->getMessage(), Response::HTTP_BAD_REQUEST);
+                $form->submit($datas);
+
+                $validate = $validator->validate($user, null, 'UpdatePersonnalInformations');
+
+                if (count($validate) !== 0) {
+                    foreach ($validate as $error) {
+                        return new JsonResponse($error->getMessage(), Response::HTTP_BAD_REQUEST);
+                    }
                 }
+
+                $user->setUpdatedAt(new \DateTime());
+
+                $em->persist($user);
+                $em->flush();
+
+                return new JsonResponse('Les informations ont bien été mise à jour !', Response::HTTP_OK);
+
+            } else {
+                return new JsonResponse("Veuillez vous connecter !", Response::HTTP_BAD_REQUEST);
             }
-
-            $user->setUpdatedAt(new \DateTime());
-
-            $em->persist($user);
-            $em->flush();
-
-            return new JsonResponse('Les informations ont bien été mise à jour !', Response::HTTP_OK);
-
         } else {
-            return new JsonResponse("Please send a valid data", Response::HTTP_BAD_REQUEST);
+            return new JsonResponse("Merci de renseigner des informations !", Response::HTTP_BAD_REQUEST);
         }
     }
 
