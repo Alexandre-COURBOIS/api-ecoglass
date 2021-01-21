@@ -51,6 +51,18 @@ class Users implements UserInterface
      *     minMessage="Merci de renseigner un nom correct",
      *     groups={"Register"}
      *     )
+     *
+     * @Assert\NotBlank(
+     *     message="Merci de renseigner votre nom.",
+     *     groups={"UpdatePersonnalInformations"}
+     *     )
+     *
+     * @Assert\Length(
+     *     min="2",
+     *     minMessage="Merci de renseigner un nom correct",
+     *     groups={"UpdatePersonnalInformations"}
+     *     )
+     *
      */
     private $name;
 
@@ -67,6 +79,18 @@ class Users implements UserInterface
      *     minMessage="Merci de renseigner un prenom correct",
      *     groups={"Register"}
      *     )
+     *
+     * @Assert\NotBlank(
+     *     message="Merci de renseigner votre prenom.",
+     *     groups={"UpdatePersonnalInformations"}
+     *     )
+     *
+     * @Assert\Length(
+     *     min="2",
+     *     minMessage="Merci de renseigner un prenom correct",
+     *     groups={"UpdatePersonnalInformations"}
+     *     )
+     *
      */
     private $surname;
 
@@ -82,6 +106,17 @@ class Users implements UserInterface
      *     min="2",
      *     minMessage="Merci de renseigner un pseudo correct",
      *     groups={"Register"}
+     *     )
+     *
+     * @Assert\NotBlank(
+     *     message="Merci de renseigner votre pseudo.",
+     *     groups={"UpdatePersonnalInformations"}
+     *     )
+     *
+     * @Assert\Length(
+     *     min="2",
+     *     minMessage="Merci de renseigner un pseudo correct",
+     *     groups={"UpdatePersonnalInformations"}
      *     )
      */
     private $pseudo;
