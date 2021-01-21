@@ -26,13 +26,40 @@ class UserController extends AbstractController
      */
     public function getUserInformations(UsersRepository $usersRepository, Request $request): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
+        $datas = json_decode($request->getContent(), true);
 
-        $email = $data['email'];
+        if ($datas !== null && $datas) {
 
-        $user = $usersRepository->getUserByEmail($email);
+            $email = $datas['email'];
 
-        return new JsonResponse($user, Response::HTTP_OK);
+            $user = $usersRepository->getUserByEmail($email);
+
+            return new JsonResponse($user, Response::HTTP_OK);
+
+        } else {
+            return new JsonResponse("Please send a valid data", Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    /**
+     * @Route("/update/user", name="update_user", methods={"POST"})
+     * @param UsersRepository $usersRepository
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function updateUserPersonnalInformations(UsersRepository $usersRepository, Request $request): JsonResponse
+    {
+        $datas = json_decode($request->getContent(), true);
+
+        if ($datas !== null && $datas) {
+
+            $user = $this->getUser();
+
+            return new JsonResponse($user, Response::HTTP_OK);
+
+        } else {
+            return new JsonResponse("Please send a valid data", Response::HTTP_BAD_REQUEST);
+        }
     }
 
 
