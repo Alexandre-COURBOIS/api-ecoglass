@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\UserContactInformationsType;
 use App\Form\UserPersonnalInformationsType;
 use App\Repository\UsersRepository;
 use App\Service\SecurityFunctions;
@@ -54,13 +55,12 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/update/personnal/informations", name="update_user", methods={"POST"})
-     * @param UsersRepository $usersRepository
+     * @Route("/update/personnal/informations", name="update_personnal_informations_user", methods={"POST"})
      * @param Request $request
      * @param ValidatorInterface $validator
      * @return JsonResponse
      */
-    public function updateUserPersonnalInformations(UsersRepository $usersRepository, Request $request, ValidatorInterface $validator, EntityManagerInterface $em): JsonResponse
+    public function updateUserPersonnalInformations(Request $request, ValidatorInterface $validator, EntityManagerInterface $em): JsonResponse
     {
         $datas = json_decode($request->getContent(), true);
 
@@ -79,6 +79,54 @@ class UserController extends AbstractController
                 $form->submit($datas);
 
                 $validate = $validator->validate($user, null, 'UpdatePersonnalInformations');
+
+                if (count($validate) !== 0) {
+                    foreach ($validate as $error) {
+                        return new JsonResponse($error->getMessage(), Response::HTTP_BAD_REQUEST);
+                    }
+                }
+
+                $user->setUpdatedAt(new \DateTime());
+
+                $em->persist($user);
+                $em->flush();
+
+                return new JsonResponse('Les informations ont bien été mise à jour !', Response::HTTP_OK);
+
+            } else {
+                return new JsonResponse("Veuillez vous connecter !", Response::HTTP_BAD_REQUEST);
+            }
+        } else {
+            return new JsonResponse("Merci de renseigner des informations !", Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    /**
+     * @Route("/update/contact/informations", name="update_contact_informations_user", methods={"POST"})
+     * @param Request $request
+     * @param ValidatorInterface $validator
+     * @return JsonResponse
+     */
+    public function updateUserContactInformations(Request $request, ValidatorInterface $validator, EntityManagerInterface $em): JsonResponse
+    {
+        $datas = json_decode($request->getContent(), true);
+
+        if ($datas !== null && $datas) {
+
+            $user = $this->getUser();
+
+            if ($user) {
+
+                $datas['email'] ? true : $datas['email'] = $user->getName();
+                $datas['address'] ? true : $datas['address'] = $user->getSurname();
+                $datas['city'] ? true : $datas['city'] = $user->getPseudo();
+                $datas['postalCode'] ? true : $datas['postalCode'] = $user->getPseudo();
+
+                $form = $this->createForm(UserContactInformationsType::class, $user);
+
+                $form->submit($datas);
+
+                $validate = $validator->validate($user, null, 'UpdateContactInformations');
 
                 if (count($validate) !== 0) {
                     foreach ($validate as $error) {
