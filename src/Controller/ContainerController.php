@@ -9,6 +9,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -90,9 +92,19 @@ class ContainerController extends AbstractController
      * @param ContainersRepository $containersRepository
      * @return Response
      */
-    public function getGlassContainerDatabase(ContainersRepository $containersRepository)
+    public function getGlassContainerDatabase(ContainersRepository $containersRepository, MailerInterface $mailer)
     {
         $containers = $containersRepository->findAll();
+
+        $user = $this->getUser();
+
+        $email = (new Email())
+            ->from('ecoglass@noreply.com')
+            ->to($user->getEmail())
+            ->subject('Test')
+            ->text('TestTestTestTestTestTest');
+
+        $mailer->send($email);
 
         return new JsonResponse(count($containers), Response::HTTP_OK);
     }
