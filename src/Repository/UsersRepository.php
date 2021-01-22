@@ -47,4 +47,14 @@ class UsersRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function getUserByEmail($value)
+    {
+        $qb = $this->createQueryBuilder('u');
+        $qb->select('u.id','u.name','u.surname','u.pseudo','u.email','u.address','u.city','u.postalCode','u.longitude','u.latitude','u.createdAt','u.roles')
+            ->andWhere('u.email = :val')
+            ->setParameter('val', $value);
+
+        return $qb->getQuery()->getResult();
+    }
 }
