@@ -14,7 +14,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Validator\Constraints\Json;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 
@@ -192,6 +191,8 @@ class UserController extends AbstractController
                                 return new JsonResponse($error->getMessage(), Response::HTTP_BAD_REQUEST);
                             }
                         }
+
+                        //TODO : Envoyer un email de verification;
 
                         $hashword = $encoder->encodePassword($user, $user->getPassword());
 
