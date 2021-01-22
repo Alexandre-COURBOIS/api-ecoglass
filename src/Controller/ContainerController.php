@@ -6,6 +6,7 @@ use App\Entity\Containers;
 use App\Repository\ContainersRepository;
 use App\Service\Container;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -98,11 +99,22 @@ class ContainerController extends AbstractController
 
         $user = $this->getUser();
 
-        $email = (new Email())
-            ->from('ecoglass@noreply.com')
+//        $email = (new Email())
+//            ->from('ecoglass@noreply.com')
+//            ->to($user->getEmail())
+//            ->subject('Test')
+//            ->text('TestTestTestTestTestTest');
+//
+//        $mailer->send($email);
+
+        $email = (new TemplatedEmail())
+            ->from('support.web@ecoglass.com')
             ->to($user->getEmail())
-            ->subject('Test')
-            ->text('TestTestTestTestTestTest');
+            ->subject('Mise à jour de vos informations')
+            ->htmlTemplate('email/informations_update.html.twig')
+            ->context([
+                'user' => $user,
+            ]);
 
         $mailer->send($email);
 
