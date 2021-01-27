@@ -87,6 +87,18 @@
     "gesdinet/jwt-refresh-token-bundle": {
         "version": "v0.10.0"
     },
+    "jsor/doctrine-postgis": {
+        "version": "1.7",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.7",
+            "ref": "211979f7917bf6edb8fc5006a17b2e84e8e84d50"
+        },
+        "files": [
+            "./config/packages/jsor_doctrine_postgis.yaml"
+        ]
+    },
     "laminas/laminas-code": {
         "version": "3.5.1"
     },

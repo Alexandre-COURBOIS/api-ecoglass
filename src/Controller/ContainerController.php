@@ -62,6 +62,7 @@ class ContainerController extends AbstractController
                 $containers->setStreet($containerStreet);
                 $containers->setLongitude($containerLongitude);
                 $containers->setLatitude($containerLatitude);
+                $containers->setCoordinates('POINT(' . $containerLongitude . ' ' . $containerLatitude . ')');
 
                 $manager->persist($containers);
 
