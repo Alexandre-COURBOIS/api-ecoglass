@@ -8,10 +8,14 @@ use App\Form\UserPersonnalInformationsType;
 use App\Repository\UsersRepository;
 use App\Service\SecurityFunctions;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -60,9 +64,11 @@ class UserController extends AbstractController
      * @param Request $request
      * @param ValidatorInterface $validator
      * @param EntityManagerInterface $em
+     * @param MailerInterface $mailer
      * @return JsonResponse
+     * @throws TransportExceptionInterface
      */
-    public function updateUserPersonnalInformations(Request $request, ValidatorInterface $validator, EntityManagerInterface $em): JsonResponse
+    public function updateUserPersonnalInformations(Request $request, ValidatorInterface $validator, EntityManagerInterface $em, MailerInterface $mailer): JsonResponse
     {
         $datas = json_decode($request->getContent(), true);
 
@@ -93,6 +99,17 @@ class UserController extends AbstractController
                 $em->persist($user);
                 $em->flush();
 
+                $email = (new TemplatedEmail())
+                    ->from('support.web@ecoglass.com')
+                    ->to($user->getEmail())
+                    ->subject('Mise à jour de vos informations')
+                    ->htmlTemplate('email/informations_update.html.twig')
+                    ->context([
+                        'user' => $user,
+                    ]);
+
+                $mailer->send($email);
+
                 return new JsonResponse('Les informations ont bien été mise à jour !', Response::HTTP_OK);
 
             } else {
@@ -108,9 +125,10 @@ class UserController extends AbstractController
      * @param Request $request
      * @param ValidatorInterface $validator
      * @param EntityManagerInterface $em
+     * @param MailerInterface $mailer
      * @return JsonResponse
      */
-    public function updateUserContactInformations(Request $request, ValidatorInterface $validator, EntityManagerInterface $em): JsonResponse
+    public function updateUserContactInformations(Request $request, ValidatorInterface $validator, EntityManagerInterface $em, MailerInterface $mailer): JsonResponse
     {
         $datas = json_decode($request->getContent(), true);
 
@@ -158,9 +176,10 @@ class UserController extends AbstractController
      * @param ValidatorInterface $validator
      * @param EntityManagerInterface $em
      * @param UserPasswordEncoderInterface $encoder
+     * @param MailerInterface $mailer
      * @return JsonResponse
      */
-    public function updateUserPassword(Request $request, ValidatorInterface $validator, EntityManagerInterface $em, UserPasswordEncoderInterface $encoder): JsonResponse
+    public function updateUserPassword(Request $request, ValidatorInterface $validator, EntityManagerInterface $em, UserPasswordEncoderInterface $encoder, MailerInterface $mailer): JsonResponse
     {
         $datas = json_decode($request->getContent(), true);
 
@@ -192,8 +211,6 @@ class UserController extends AbstractController
                             }
                         }
 
-                        //TODO : Envoyer un email de verification;
-
                         $hashword = $encoder->encodePassword($user, $user->getPassword());
 
                         $user->setPassword($hashword);
@@ -201,6 +218,17 @@ class UserController extends AbstractController
 
                         $em->persist($user);
                         $em->flush();
+
+                        $email = (new TemplatedEmail())
+                            ->from('support.web@ecoglass.com')
+                            ->to($user->getEmail())
+                            ->subject('Mise à jour de vos informations')
+                            ->htmlTemplate('email/informations_update.html.twig')
+                            ->context([
+                                'user' => $user,
+                            ]);
+
+                        $mailer->send($email);
 
                         return new JsonResponse('Le mot de passe a bien été mis à jour !', Response::HTTP_OK);
 
