@@ -49,6 +49,11 @@ class Containers
     private $latitude;
 
     /**
+     * @ORM\Column(type="geography", options={"geometry_type"="POINT"})
+     */
+    private $coordinates;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
@@ -149,6 +154,21 @@ class Containers
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getCoordinates()
+    {
+        $cooSRID = $this->coordinates;
+        $coo = substr($cooSRID, 16, -1); // remove SRID
+        $gps = str_replace(' ', ', ',$coo); //replace space with coma
+        return $gps;
+    }
+
+    public function setCoordinates($coordinates): self
+    {
+        $this->coordinates = $coordinates;
 
         return $this;
     }
