@@ -14,10 +14,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
-use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 
@@ -28,12 +31,18 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class UserController extends AbstractController
 {
-
     private SecurityFunctions $sf;
+    private Serializer $serializer;
 
     public function __construct(SecurityFunctions $securityFunctions)
     {
         $this->sf = $securityFunctions;
+
+        $encoders = [new XmlEncoder(), new JsonEncoder()];
+
+        $normalizers = [new ObjectNormalizer()];
+
+        $this->serializer= new Serializer($normalizers, $encoders);
     }
 
     /**
@@ -50,9 +59,11 @@ class UserController extends AbstractController
 
             $email = $datas['email'];
 
-            $user = $usersRepository->getUserByEmail($email);
+            $user = $usersRepository->findOneBy(['email' => $email]);
 
-            return new JsonResponse($user, Response::HTTP_OK);
+            $jsonContent = $this->serializer->serialize($user, 'json');
+
+            return JsonResponse::fromJsonString($jsonContent);
 
         } else {
             return new JsonResponse("Please send a valid data", Response::HTTP_BAD_REQUEST);
