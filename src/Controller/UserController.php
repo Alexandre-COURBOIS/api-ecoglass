@@ -7,6 +7,7 @@ use App\Form\UserPasswordType;
 use App\Form\UserPersonnalInformationsType;
 use App\Repository\UsersRepository;
 use App\Service\SecurityFunctions;
+use App\Service\SerializerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -32,17 +33,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class UserController extends AbstractController
 {
     private SecurityFunctions $sf;
-    private Serializer $serializer;
+    private SerializerService $serializerService;
 
-    public function __construct(SecurityFunctions $securityFunctions)
+    public function __construct(SecurityFunctions $securityFunctions,SerializerService $serializer)
     {
         $this->sf = $securityFunctions;
-
-        $encoders = [new XmlEncoder(), new JsonEncoder()];
-
-        $normalizers = [new ObjectNormalizer()];
-
-        $this->serializer= new Serializer($normalizers, $encoders);
+        $this->serializerService = $serializer;
     }
 
     /**
@@ -61,7 +57,7 @@ class UserController extends AbstractController
 
             $user = $usersRepository->findOneBy(['email' => $email]);
 
-            $jsonContent = $this->serializer->serialize($user, 'json');
+            $jsonContent = $jsonContent = $this->serializerService->SimpleSerializer($user, 'json');
 
             return JsonResponse::fromJsonString($jsonContent);
 
