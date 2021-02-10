@@ -34,7 +34,7 @@ class RegisterController extends AbstractController
      *
      * Methode permettant l'inscription de nouveaux utilisateurs
      */
-    public function userRegister(Request $request, ValidatorInterface $validator, EntityManagerInterface $em, UserPasswordEncoderInterface $passwordEncoder)
+    public function userRegister(Request $request, ValidatorInterface $validator, EntityManagerInterface $em, UserPasswordEncoderInterface $passwordEncoder): JsonResponse
     {
         $user = new Users();
 
