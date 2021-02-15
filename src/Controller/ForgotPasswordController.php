@@ -88,7 +88,7 @@ class ForgotPasswordController extends AbstractController
                 $interval = $formatStartDate->diff($formatCurrentDate);
 
                 if ($interval->d === 0 && $interval->m === 0 && $interval->h === 0) {
-                    if ((int)$interval->i < 3) {
+                    if ((int)$interval->i < 30) {
                         return new JsonResponse(Response::HTTP_OK);
                     } else {
                         $user->setResetToken(null);
