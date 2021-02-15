@@ -88,8 +88,8 @@ class ForgotPasswordController extends AbstractController
                 $interval = $formatStartDate->diff($formatCurrentDate);
 
                 if ($interval->d === 0 && $interval->m === 0 && $interval->h === 0) {
-                    if ((int)$interval->i < 30) {
-                        return new JsonResponse( Response::HTTP_OK);
+                    if ((int)$interval->i < 3) {
+                        return new JsonResponse(Response::HTTP_OK);
                     } else {
                         $user->setResetToken(null);
                         $user->setResetTokenAt(null);
@@ -98,6 +98,10 @@ class ForgotPasswordController extends AbstractController
                         return new JsonResponse("Le délais pour changer votre mot de passe à expirer, merci de renouveler la demande.", RESPONSE::HTTP_BAD_REQUEST);
                     }
                 } else {
+                    $user->setResetToken(null);
+                    $user->setResetTokenAt(null);
+                    $em->persist($user);
+                    $em->flush();
                     return new JsonResponse("Le délais pour changer votre mot de passe à expirer, merci de renouveler la demande.", RESPONSE::HTTP_BAD_REQUEST);
                 }
             } else {
