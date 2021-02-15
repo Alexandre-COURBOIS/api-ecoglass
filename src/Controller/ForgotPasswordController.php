@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\UserPasswordType;
 use App\Repository\UsersRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -12,7 +13,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\Constraints\Json;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ForgotPasswordController extends AbstractController
 {
@@ -89,7 +92,7 @@ class ForgotPasswordController extends AbstractController
 
                 if ($interval->d === 0 && $interval->m === 0 && $interval->h === 0) {
                     if ((int)$interval->i < 30) {
-                        return new JsonResponse(Response::HTTP_OK);
+                        return new JsonResponse($user->getEmail(), Response::HTTP_OK);
                     } else {
                         $user->setResetToken(null);
                         $user->setResetTokenAt(null);
@@ -109,6 +112,81 @@ class ForgotPasswordController extends AbstractController
             }
         } else {
             return new JsonResponse("Cette url n'existe pas ou est incorrect.", RESPONSE::HTTP_BAD_REQUEST);
+        }
+    }
+
+    /**
+     * @Route("/reset-password/update-password", name="update_password_user", methods={"POST"})
+     * @param Request $request
+     * @param UsersRepository $usersRepository
+     * @param ValidatorInterface $validator
+     * @param EntityManagerInterface $em
+     * @param UserPasswordEncoderInterface $encoder
+     * @param MailerInterface $mailer
+     * @return JsonResponse
+     * @throws TransportExceptionInterface
+     */
+    public function updateForgotPasswordUser(Request $request, UsersRepository $usersRepository, ValidatorInterface $validator, EntityManagerInterface $em, UserPasswordEncoderInterface $encoder, MailerInterface $mailer): JsonResponse
+    {
+        $datas = json_decode($request->getContent(), true);
+
+        if ($datas !== null && $datas) {
+
+            $email = $datas['email'];
+
+            $user = $usersRepository->findOneBy(['email' => $email]);
+
+            if ($user) {
+
+                $newPassword = $datas['password'];
+
+                $verifNewPassword = $datas['verifPassword'];
+
+                if ($newPassword === $verifNewPassword) {
+
+                    $form = $this->createForm(UserPasswordType::class, $user);
+
+                    $form->submit($datas);
+
+                    $validate = $validator->validate($user, null, 'PasswordUpdate');
+
+                    if (count($validate) !== 0) {
+                        foreach ($validate as $error) {
+                            return new JsonResponse($error->getMessage(), Response::HTTP_BAD_REQUEST);
+                        }
+                    }
+
+                    $hashword = $encoder->encodePassword($user, $user->getPassword());
+
+                    $user->setPassword($hashword);
+                    $user->setResetTokenAt(null);
+                    $user->setResetToken(null);
+                    $user->setUpdatedAt(new \DateTime());
+
+                    $em->persist($user);
+                    $em->flush();
+
+                    $email = (new TemplatedEmail())
+                        ->from('support.web@ecoglass.com')
+                        ->to($user->getEmail())
+                        ->subject('Mise à jour de vos informations')
+                        ->htmlTemplate('email/informations_update.html.twig')
+                        ->context([
+                            'user' => $user,
+                        ]);
+
+                    $mailer->send($email);
+
+                    return new JsonResponse('Le mot de passe a bien été mis à jour !', Response::HTTP_OK);
+
+                } else {
+                    return new JsonResponse("Les deux nouveaux mot de passe ne correspondent pas !", Response::HTTP_BAD_REQUEST);
+                }
+            } else {
+                return new JsonResponse("Cet email ne correspond à aucun utilisateur", Response::HTTP_BAD_REQUEST);
+            }
+        } else {
+            return new JsonResponse("Merci de renseigner des informations !", Response::HTTP_BAD_REQUEST);
         }
     }
 

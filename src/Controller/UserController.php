@@ -181,6 +181,7 @@ class UserController extends AbstractController
      * @param UserPasswordEncoderInterface $encoder
      * @param MailerInterface $mailer
      * @return JsonResponse
+     * @throws TransportExceptionInterface
      */
     public function updateUserPassword(Request $request, ValidatorInterface $validator, EntityManagerInterface $em, UserPasswordEncoderInterface $encoder, MailerInterface $mailer): JsonResponse
     {
