@@ -301,6 +301,11 @@ class Users implements UserInterface
     private $idFacebook;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $resetTokenAt;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
@@ -498,6 +503,18 @@ class Users implements UserInterface
         return $this;
     }
 
+    public function getResetTokenAt()
+    {
+        return $this->resetTokenAt;
+    }
+
+    public function setResetTokenAt($resetTokenAt): self
+    {
+        $this->resetTokenAt = $resetTokenAt;
+
+        return $this;
+    }
+
     public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
@@ -543,7 +560,7 @@ class Users implements UserInterface
 
     public function getUsername()
     {
-       return $this->email;
+        return $this->email;
     }
 
     public function eraseCredentials()
