@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Users;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -14,7 +15,8 @@ class UserPersonnalInformationsType extends ComponentType
         $builder
             ->add('name', TextType::class, $this->getConfig('Nom*', 'Votre nom'))
             ->add('surname', TextType::class, $this->getConfig('Prénom*', 'Votre prénom'))
-            ->add('pseudo', TextType::class, $this->getConfig('Pseudo*', 'Votre pseudo'));
+            ->add('pseudo', TextType::class, $this->getConfig('Pseudo*', 'Votre pseudo'))
+            ->add('email', EmailType::class, $this->getConfig('Email*', 'Votre email'));
     }
 
     public function configureOptions(OptionsResolver $resolver)

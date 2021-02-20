@@ -13,7 +13,6 @@ class UserContactInformationsType extends ComponentType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', EmailType::class, $this->getConfig('Email*', 'Votre email'))
             ->add('address', TextType::class, $this->getConfig('Adresse', 'Si vous souhaitez nous indiquer votre adresse'))
             ->add('city', TextType::class, $this->getConfig('Ville*', 'Votre ville de résidence'))
             ->add('postalCode', TextType::class, $this->getConfig('Code postal', 'Si vous souhaitez nous indiquer votre code postal'))

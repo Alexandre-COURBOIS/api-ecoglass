@@ -63,7 +63,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/update/personnal/informations", name="update_personnal_informations_user", methods={"POST"})
+     * @Route("/update/personnal/informations", name="update_personnal_informations_user", methods={"PUT"})
      * @param Request $request
      * @param ValidatorInterface $validator
      * @param EntityManagerInterface $em
@@ -81,6 +81,7 @@ class UserController extends AbstractController
 
             if ($user) {
 
+                $datas['email'] ? true : $datas['email'] = $user->getEmail();
                 $datas['name'] ? true : $datas['name'] = $user->getName();
                 $datas['surname'] ? true : $datas['surname'] = $user->getSurname();
                 $datas['pseudo'] ? true : $datas['pseudo'] = $user->getPseudo();
@@ -124,7 +125,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/update/contact/informations", name="update_contact_informations_user", methods={"POST"})
+     * @Route("/update/contact/informations", name="update_contact_informations_user", methods={"PUT"})
      * @param Request $request
      * @param ValidatorInterface $validator
      * @param EntityManagerInterface $em
@@ -141,7 +142,6 @@ class UserController extends AbstractController
 
             if ($user) {
 
-                $datas['email'] ? true : $datas['email'] = $user->getEmail();
                 $datas['address'] ? true : $datas['address'] = $user->getAddress();
                 $datas['city'] ? true : $datas['city'] = $user->getCity();
                 $datas['postalCode'] ? true : $datas['postalCode'] = $user->getPostalCode();
@@ -174,7 +174,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/update/password", name="update_password_user", methods={"POST"})
+     * @Route("/update/password", name="update_password_user", methods={"PUT"})
      * @param Request $request
      * @param ValidatorInterface $validator
      * @param EntityManagerInterface $em

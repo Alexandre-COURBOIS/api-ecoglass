@@ -136,12 +136,12 @@ class Users implements UserInterface
      *
      * @Assert\NotBlank(
      *     message="Merci de renseigner votre email.",
-     *     groups={"UpdateContactInformations"}
+     *     groups={"UpdatePersonnalInformations"}
      *     )
      *
      * @Assert\Email(
      *     message="Veuillez renseigner un mail valide.",
-     *     groups={"UpdateContactInformations"}
+     *     groups={"UpdatePersonnalInformations"}
      *     )
      *
      */
