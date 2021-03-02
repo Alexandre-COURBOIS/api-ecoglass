@@ -98,7 +98,7 @@ class ContainerController extends AbstractController
     {
         $containers = $this->containerService->getGlassContainerApi();
 
-        return new JsonResponse(count($containers["features"]), Response::HTTP_OK);
+        return new JsonResponse($containers["features"], Response::HTTP_OK);
     }
 
     /**
@@ -110,7 +110,7 @@ class ContainerController extends AbstractController
     {
         $containers = $containersRepository->findAll();
 
-        return new JsonResponse(count($containers), Response::HTTP_OK);
+        return new JsonResponse($containers, Response::HTTP_OK);
     }
 
 }
