@@ -27,11 +27,13 @@ class ContainerController extends AbstractController
 {
 
     private Container $containerService;
+    private SerializerService $serializer;
 
 
-    public function __construct(Container $container)
+    public function __construct(Container $container, SerializerService $serializerService)
     {
         $this->containerService = $container;
+        $this->serializer = $serializerService;
     }
 
     /**
@@ -106,11 +108,9 @@ class ContainerController extends AbstractController
      * @param ContainersRepository $containersRepository
      * @return Response
      */
-    public function getGlassContainerDatabase(ContainersRepository $containersRepository)
+    public function getGlassContainerDatabase(ContainersRepository $containersRepository): Response
     {
-        $containers = $containersRepository->findAll();
-
-        return new JsonResponse($containers, Response::HTTP_OK);
+        return JsonResponse::fromJsonString($this->serializer->SimpleSerializer($containersRepository->findAll(), 'json'));
     }
 
 }
