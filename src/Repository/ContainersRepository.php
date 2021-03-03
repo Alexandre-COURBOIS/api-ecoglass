@@ -26,32 +26,20 @@ class ContainersRepository extends ServiceEntityRepository
             ->getQuery()
             ->execute();
     }
-    // /**
-    //  * @return Containers[] Returns an array of Containers objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Containers
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
+//    public function containerToText()
+//    {
+//        $query =  "SELECT * from public.containers ORDER BY id ASC";
+//        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+//        $stmt->execute();
+//
+//        $result =  $stmt->fetchAllAssociative();
+//
+//        $json = json_encode($result);
+//        $file = fopen('requestResult.txt','w');
+//        fwrite($file, $json);
+//        fclose($file);
+//
+//        return "ok";
+//    }
 }
