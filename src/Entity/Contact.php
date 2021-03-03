@@ -59,7 +59,7 @@ class Contact
      * @Assert\Length(
      *     min="5",
      *     minMessage="Merci de renseigner une adresse correct",
-     *     groups={"UpdateContactInformations"}
+     *     groups={"Contact"}
      *     )
      *
      */
