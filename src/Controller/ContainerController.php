@@ -28,18 +28,20 @@ class ContainerController extends AbstractController
 
     private Container $containerService;
     private SerializerService $serializer;
+    private EntityManagerInterface $manager;
+    private ContainersRepository $containersRepository;
 
 
-    public function __construct(Container $container, SerializerService $serializerService)
+    public function __construct(Container $container, SerializerService $serializerService, EntityManagerInterface $entityManagerInterface, ContainersRepository $containersRepository)
     {
         $this->containerService = $container;
         $this->serializer = $serializerService;
+        $this->manager = $entityManagerInterface;
+        $this->containersRepository = $containersRepository;
     }
 
     /**
      * @Route("/set/glass", name="set_glass", methods={"PUT"})
-     * @param EntityManagerInterface $manager
-     * @param ContainersRepository $containersRepository
      * @return JsonResponse
      * @throws ClientExceptionInterface
      * @throws DecodingExceptionInterface
@@ -47,15 +49,15 @@ class ContainerController extends AbstractController
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
-    public function setGlassContainer(EntityManagerInterface $manager, ContainersRepository $containersRepository): JsonResponse
+    public function setGlassContainer(): JsonResponse
     {
         $glassContainer = $this->containerService->getGlassContainerApi();
 
         $containerFeature = $glassContainer["features"];
 
-        if (count($containerFeature) !== (count($containersRepository->findAll()))) {
+        if (count($containerFeature) !== (count($this->containersRepository->findAll()))) {
 
-            $containersRepository->deleteAllContainers();
+            $this->containersRepository->deleteAllContainers();
 
             for ($i = 0; $i <= count($containerFeature) - 1; $i++) {
 
@@ -78,11 +80,11 @@ class ContainerController extends AbstractController
                 $containers->setLatitude($containerLatitude);
                 $containers->setCoordinates('POINT(' . $containerLongitude . ' ' . $containerLatitude . ')');
 
-                $manager->persist($containers);
+                $this->manager->persist($containers);
 
             }
 
-            $manager->flush();
+            $this->manager->flush();
 
             return new JsonResponse("Container data is now updated", Response::HTTP_OK);
 
