@@ -51,7 +51,7 @@ class UpdateContainers extends Command
                 '============',
                 'Containers update',
                 '============',
-                $response
+                '<fg=green>' .$response. '</>'
             ]);
 
             return Command::SUCCESS;
