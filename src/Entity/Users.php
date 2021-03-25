@@ -246,7 +246,7 @@ class Users implements UserInterface
      *     )
      *
      * @Assert\Regex(
-     *     pattern="/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/",
+     *     pattern="/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!.:,;^%*?&µù%=&])[A-Za-z\d@$!.:,;^%*?&µù%=&]{8,}$/",
      *     message="Votre mot de passe doit contenir au moins caractère spécial, une majuscule ainsi qu'un chiffre.",
      *     groups={"PasswordUpdate"},
      * )
@@ -263,7 +263,7 @@ class Users implements UserInterface
      *     )
      *
      * @Assert\Regex(
-     *     pattern="/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/",
+     *     pattern="/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!.:,;^%*?&µù%=&])[A-Za-z\d@$!.:,;^%*?&µù%=&]{8,}$/",
      *     message="Votre mot de passe doit contenir au moins caractère spécial, une majuscule ainsi qu'un chiffre.",
      *     groups={"Register"},
      * )
@@ -278,7 +278,7 @@ class Users implements UserInterface
      *     )
      *
      * @Assert\Regex(
-     *     pattern="/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/",
+     *     pattern="/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!.:,;^%*?&µù%=&])[A-Za-z\d@$!.:,;^%*?&µù%=&]{8,}$/",
      *     message="Votre mot de passe doit contenir au moins caractère spécial, une majuscule ainsi qu'un chiffre.",
      * )
      *
