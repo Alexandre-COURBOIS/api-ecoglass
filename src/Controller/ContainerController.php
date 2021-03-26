@@ -175,16 +175,6 @@ class ContainerController extends AbstractController
     }
 
     /**
-     * @Route("/get/api/glass/toulouse", name="get_glass_api_toulouse", methods={"GET"})
-     */
-    public function getGlassContainerApiToulouse(): Response
-    {
-        $containers = $this->containerService->getGlassContainerApiPoitiers();
-
-        return new JsonResponse($containers['records'][0]['fields']['geo_shape']['coordinates'][0], Response::HTTP_OK);
-    }
-
-    /**
      * @Route("/get/database/glass", name="get_glass_database", methods={"GET"})
      * @param ContainersRepository $containersRepository
      * @return Response
