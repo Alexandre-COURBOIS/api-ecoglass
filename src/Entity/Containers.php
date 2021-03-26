@@ -91,7 +91,7 @@ class Containers
         return $this->city;
     }
 
-    public function setCity(string $city): self
+    public function setCity($city): self
     {
         $this->city = $city;
 
@@ -115,7 +115,7 @@ class Containers
         return $this->street;
     }
 
-    public function setStreet(string $street): self
+    public function setStreet($street): self
     {
         $this->street = $street;
 
