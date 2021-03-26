@@ -19,22 +19,22 @@ class Containers
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $containerId;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $city;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $postalCode;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $street;
 
@@ -91,7 +91,7 @@ class Containers
         return $this->city;
     }
 
-    public function setCity(string $city): self
+    public function setCity($city): self
     {
         $this->city = $city;
 
@@ -115,7 +115,7 @@ class Containers
         return $this->street;
     }
 
-    public function setStreet(string $street): self
+    public function setStreet($street): self
     {
         $this->street = $street;
 
