@@ -131,6 +131,7 @@ class UserController extends AbstractController
      * @param EntityManagerInterface $em
      * @param MailerInterface $mailer
      * @return JsonResponse
+     * @throws TransportExceptionInterface
      */
     public function updateUserContactInformations(Request $request, ValidatorInterface $validator, EntityManagerInterface $em, MailerInterface $mailer): JsonResponse
     {
@@ -162,6 +163,17 @@ class UserController extends AbstractController
 
                 $em->persist($user);
                 $em->flush();
+
+                $email = (new TemplatedEmail())
+                    ->from('support.web@ecoglass.com')
+                    ->to($user->getEmail())
+                    ->subject('Mise à jour de vos informations')
+                    ->htmlTemplate('email/informations_update.html.twig')
+                    ->context([
+                        'user' => $user,
+                    ]);
+
+                $mailer->send($email);
 
                 return new JsonResponse('Les informations ont bien été mise à jour !', Response::HTTP_OK);
 
